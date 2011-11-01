@@ -2,6 +2,7 @@ package ca.ajwest.irishpoker;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class IrishPokerActivity extends Activity {
 	public int imageArr[] = new int[53]; //52 cards plus the back of a card
 	public TextView mTextView;
 	public Button mBlackButton, mRedButton, mNextButton;
-	public ImageButton mainCard, firstPickedCard, secondPickedCard, mHigherButton1, mHigherButton2;
+	public ImageButton mFirstPickedCard, mSecondPickedCard, mThirdPickedCard, mFourthPickedCard, mHigherButton1, mHigherButton2, mMainCard, mLeftCard, mRightCard;
 	public Card card1, card2, card3, card4;
 	
 	/** Called when the activity is first created. */
@@ -89,10 +90,28 @@ public class IrishPokerActivity extends Activity {
         //later, use: image.setImage(imageArr[n]);
         
        
-        mainCard = (ImageButton) findViewById(R.id.imageView1);
-        mainCard.setImageResource(R.drawable.back);
-        firstPickedCard = (ImageButton) findViewById(R.id.imageView2); //TODO refactor the imageView names into imageButtons, because that's what they are.
-        secondPickedCard = (ImageButton) findViewById(R.id.imageButton3);
+        mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
+        mMainCard.setImageResource(R.drawable.back);
+        mFirstPickedCard = (ImageButton) findViewById(R.id.imageButton1); //TODO refactor the imageView names into imageButtons, because that's what they are.
+        mSecondPickedCard = (ImageButton) findViewById(R.id.imageButton2);
+        mThirdPickedCard = (ImageButton) findViewById(R.id.imageButton3);
+        mFourthPickedCard = (ImageButton) findViewById(R.id.imageButton4);
+        mLeftCard = (ImageButton) findViewById(R.id.buttonLeftCard);
+        mRightCard = (ImageButton) findViewById(R.id.buttonRightCard);
+        
+        
+        //make the small cards hidden
+        mFirstPickedCard.setVisibility(View.GONE);
+        mSecondPickedCard.setVisibility(View.GONE);
+        mThirdPickedCard.setVisibility(View.GONE);
+        mFourthPickedCard.setVisibility(View.GONE);
+        mLeftCard.setVisibility(View.GONE);
+        mRightCard.setVisibility(View.GONE);
+        
+        //Set initial message:
+    	mTextView.setText("Do you think this card will be BLACK or RED?");
+
+        
         
         //User thinks it's Black.
         mBlackButton = (Button) findViewById(R.id.blackButton);
@@ -105,7 +124,7 @@ public class IrishPokerActivity extends Activity {
 		        card1 = current;
 				
 				//flip the card over
-		        mainCard.setImageResource(imageArr[current.cardNum]);
+		        mMainCard.setImageResource(imageArr[current.cardNum]);
 		        //did user guess correctly?
 		        if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was incorrect
 		        	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
@@ -113,6 +132,7 @@ public class IrishPokerActivity extends Activity {
 		        	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
 		        }
 		        
+
 		        //hide the buttons
 		        mBlackButton.setVisibility(View.GONE);
 		        mRedButton.setVisibility(View.GONE);
@@ -121,7 +141,7 @@ public class IrishPokerActivity extends Activity {
 		});
 		
 		//User thinks it's Red.
-        mRedButton = (Button) findViewById(R.id.redButton);
+		mRedButton = (Button) findViewById(R.id.redButton);
 		mRedButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				//Generate a card
@@ -129,7 +149,7 @@ public class IrishPokerActivity extends Activity {
 		        card1 = current;
 				
 				//flip the card over
-		        mainCard.setImageResource(imageArr[current.cardNum]);
+		        mMainCard.setImageResource(imageArr[current.cardNum]);
 		        //did user guess correctly?
 		        if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was correct
 		        	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
@@ -148,13 +168,14 @@ public class IrishPokerActivity extends Activity {
     }
     
     private void nextButton1(){
-    	mNextButton = (Button) findViewById(R.id.nextButton); 
+    	mNextButton = (Button) findViewById(R.id.blackButton); 
     	mNextButton.setVisibility(View.VISIBLE);
     	mNextButton.setText("Next");
     	mNextButton.setOnClickListener(new OnClickListener() {
     		public void onClick(View arg0) {
-    			firstPickedCard.setImageResource(imageArr[card1.cardNum]);
-    			mainCard.setImageResource(imageArr[0]);
+    			mFirstPickedCard.setImageResource(imageArr[card1.cardNum]);
+    			mFirstPickedCard.setVisibility(View.VISIBLE);
+    			mMainCard.setImageResource(imageArr[0]);
     			mNextButton.setVisibility(View.GONE);
     			round2();
     		}           
@@ -162,23 +183,23 @@ public class IrishPokerActivity extends Activity {
     }
     
     private void nextButton2(){
-    	mNextButton.setVisibility(View.VISIBLE);
+   	mNextButton.setVisibility(View.VISIBLE);
     	mNextButton.setOnClickListener(new OnClickListener() {
     		public void onClick(View arg0) {
-    			secondPickedCard.setImageResource(imageArr[card2.cardNum]);
-    			mainCard.setImageResource(imageArr[0]);
-    			mNextButton.setVisibility(View.GONE);
-    			//round3();
+    			mSecondPickedCard.setImageResource(imageArr[card2.cardNum]);
+    			mMainCard.setImageResource(imageArr[0]);
+   			mNextButton.setVisibility(View.GONE);
     			Log.i(LOG, "Round3");
+    			round3();
     		}           
 		});
     }
-      
+   
     
     private void round2(){ //which card is higher?
     	mTextView.setText("Click the card that you think will be higher.");
-    	mHigherButton1 = (ImageButton) findViewById(R.id.imageView1);
-    	mHigherButton2 = (ImageButton) findViewById(R.id.imageView2);
+    	mHigherButton1 = (ImageButton) findViewById(R.id.buttonMainCard);
+    	mHigherButton2 = (ImageButton) findViewById(R.id.imageButton1);
     	
     	
     	mHigherButton1.setOnClickListener(new OnClickListener() {
@@ -189,10 +210,10 @@ public class IrishPokerActivity extends Activity {
 		        card2 = current;
 				
 				//flip the card over
-		        mainCard.setImageResource(imageArr[current.cardNum]);
+		        mMainCard.setImageResource(imageArr[current.cardNum]);
 		        //did user guess correctly?
 		        if (current.returnValue()>card1.returnValue()){ //card is higher. User was correct.
-		        	if (card2.returnValue()==card1.returnValue()){
+		        	if ((card2.returnValue())==(card1.returnValue())){ //TODO don't think this works for some reason. Watch out for cards that are the same.
 		        		//if card is the same value (ie. get 2 kings. Make user drink and give drinks)
 		            	mTextView.setText("They're the same! You AND somebody else must drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
 		        	}else{
@@ -216,7 +237,7 @@ public class IrishPokerActivity extends Activity {
 		        card2 = current;
 				
 				//flip the card over
-		        mainCard.setImageResource(imageArr[current.cardNum]);
+		        mMainCard.setImageResource(imageArr[current.cardNum]);
 		        //did user guess correctly?
 		        if (current.returnValue()<card1.returnValue()){ //card is higher. User was correct.
 		        	//TODO if card is the same value (ie. get 2 kings. Make user drink and give drinks)
@@ -230,7 +251,9 @@ public class IrishPokerActivity extends Activity {
 		    	nextButton2();
     		}
     	});
-    	
+    }
+    
+    private void round3(){
     	
     }
     

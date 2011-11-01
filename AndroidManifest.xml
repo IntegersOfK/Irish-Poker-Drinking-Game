@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0.0" >
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="9" android:maxSdkVersion="14"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="10" android:maxSdkVersion="14"/>
 
     <application
         android:icon="@drawable/ic_launcher"
