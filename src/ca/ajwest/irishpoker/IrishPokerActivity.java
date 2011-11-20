@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -131,7 +132,6 @@ public class IrishPokerActivity extends Activity {
 		        }else{ //suit is black, user was correct
 		        	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
 		        }
-		        
 
 		        //hide the buttons
 		        mBlackButton.setVisibility(View.GONE);
@@ -181,22 +181,8 @@ public class IrishPokerActivity extends Activity {
     		}           
 		});
     }
-    
-    private void nextButton2(){
-   	mNextButton.setVisibility(View.VISIBLE);
-    	mNextButton.setOnClickListener(new OnClickListener() {
-    		public void onClick(View arg0) {
-    			mSecondPickedCard.setImageResource(imageArr[card2.cardNum]);
-    			mSecondPickedCard.setVisibility(View.VISIBLE);
-    			mMainCard.setImageResource(imageArr[0]);
-    			mNextButton.setVisibility(View.GONE);
-    			Log.i(LOG, "Round3");
-    			round3();
-    		}           
-		});
-    }
-   
-    
+
+
     private void round2(){ //which card is higher?
     	mTextView.setText("Click the card that you think will be higher.");
     	mHigherButton1 = (ImageButton) findViewById(R.id.buttonMainCard);
@@ -254,6 +240,20 @@ public class IrishPokerActivity extends Activity {
     	});
     }
     
+    private void nextButton2(){
+    	mNextButton.setVisibility(View.VISIBLE);
+    	mNextButton.setOnClickListener(new OnClickListener() {
+    		public void onClick(View arg0) {
+    			mSecondPickedCard.setImageResource(imageArr[card2.cardNum]);
+    			mSecondPickedCard.setVisibility(View.VISIBLE);
+    			mMainCard.setImageResource(imageArr[0]);
+    			mNextButton.setVisibility(View.GONE);
+    			Log.i(LOG, "Round3");
+    			round3();
+    		}           
+    	});
+    }
+    
     int cardExplain1, cardExplain2;
     private void round3(){ //is the next card going to be inside or outside of the range of the previous two cards?
     	//Order the cards for easiser explain text and calculation below that
@@ -281,9 +281,14 @@ public class IrishPokerActivity extends Activity {
     				mTextView.setText("You were incorrect. You must drink for " + current.returnValue() + " seconds.");
     			}else{
     				Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " and less than " + cardExplain2 + ".");
-		        	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
+    				mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
     			}
-    		}           
+    			//hide the buttons
+    			mOutsideButton.setVisibility(View.GONE);
+ 		        mInsideButton.setVisibility(View.GONE);
+		        nextButton3();
+    		}
+
     	});
 
     	mOutsideButton = (Button) findViewById(R.id.redButton); 
@@ -303,12 +308,108 @@ public class IrishPokerActivity extends Activity {
     				Log.i(LOG, "User is incorrect. " + current.returnValue() + " is greater than " + cardExplain1 + " and less than " + cardExplain2 + ".");
     				mTextView.setText("You were incorrect. You must drink for " + current.returnValue() + " seconds.");
     			}
-    		}           
-		});
-
-    	
-    	
+    			
+    			//hide the buttons
+    			mOutsideButton.setVisibility(View.GONE);
+		        mInsideButton.setVisibility(View.GONE);
+		        nextButton3();
+		        
+		        
+    		}
+    	});
     }
+    
+    
+    
+    private void nextButton3(){
+    	mNextButton.setVisibility(View.VISIBLE);
+    	mNextButton.setText("Next");
+    	mNextButton.setOnClickListener(new OnClickListener() {
+    		public void onClick(View arg0) {
+    			mThirdPickedCard.setImageResource(imageArr[card3.cardNum]);
+    			mThirdPickedCard.setVisibility(View.VISIBLE);
+    			mMainCard.setImageResource(imageArr[0]);
+    			mNextButton.setVisibility(View.GONE);
+    			Log.i(LOG, "Round4");
+    			round4();
+    		}           
+    	});
+    }
+
+
+	private void round4(){
+		
+		mTextView.setText(null);
+		
+		
+		//set up dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.suitselectalert);
+        dialog.setTitle("Which suit do you think the card will be?");
+        dialog.setCancelable(false);
+        Button mButtonHeart = (Button) dialog.findViewById(R.id.buttonHeart);
+        Button mButtonSpade = (Button) dialog.findViewById(R.id.buttonSpade);
+        Button mButtonDiamond = (Button) dialog.findViewById(R.id.buttonDiamond);
+        Button mButtonClub = (Button) dialog.findViewById(R.id.buttonClub);
+        
+        mButtonHeart.setOnClickListener(new OnClickListener() {
+        @Override
+            public void onClick(View v) {
+        	Log.i(LOG, "Selected Heart");
+        	suitValueSelect(1);
+        	dialog.dismiss();
+            }
+        });
+        
+        mButtonSpade.setOnClickListener(new OnClickListener() {
+            @Override
+                public void onClick(View v) {
+            	Log.i(LOG, "Selected Spade");
+            	suitValueSelect(3);
+            	dialog.dismiss();
+                }
+            });
+        
+        mButtonDiamond.setOnClickListener(new OnClickListener() {
+            @Override
+                public void onClick(View v) {
+            	Log.i(LOG, "Selected Diamond");
+            	suitValueSelect(2);
+            	dialog.dismiss();
+                }
+            });
+        
+        mButtonClub.setOnClickListener(new OnClickListener() {
+            @Override
+                public void onClick(View v) {
+            	Log.i(LOG, "Selected Club");
+            	suitValueSelect(4); 
+            	dialog.dismiss();
+                }
+            });
+        dialog.show();
+        
+	}
+
+	
+	private void suitValueSelect(int suitValueSelected){
+
+		Log.i(LOG, "User has selected suit value: " + suitValueSelected );
+		Card current = generateCard();
+		card4 = current;
+		//flip the card over
+        mMainCard.setImageResource(imageArr[current.cardNum]);
+        //did user guess correctly?
+        
+        if (suitValueSelected == current.returnSuit()){
+        	Log.i(LOG, "User guessed correctly.");
+        	mTextView.setText("You were correct! Make somebody else drink for " + current.returnValue() + " seconds.");
+        }else{
+        	Log.i(LOG, "User guessed incorrectly");
+        	mTextView.setText("You were incorrect! Drink for " + current.returnValue() + " seconds.");
+        }
+	}
+
     
     //spits out a card and adds it to the pile of discards.
     private Card generateCard() {
