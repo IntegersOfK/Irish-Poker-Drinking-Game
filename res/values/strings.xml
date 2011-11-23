@@ -3,5 +3,31 @@
 
     <string name="hello">Hello World, IrishPokerActivity!</string>
     <string name="app_name">Irish Poker</string>
+    <string name="rules">
+    
+\nIrish Poker is a drinking game designed for 1-10 players. Each player must complete 4 rounds, the results of each determining the number of ‘drinks’ a player will either consume, or be allowed to ‘issue’ to another player. Below is a summary of each round:
+\n
+\nRound 1:
+\nPlayers must guess if their first card will be RED or BLACK when revealed.
+\nIf the user guesses correctly, they are allowed to issue a drink to any other player, which must last for the duration of the revealed card. Example, if you guess RED and the card is revealed to be a 4 OF HEARTS, you may ‘give’ a drink to another player. They must continue to consume their beverage for the value of the card, in this case: 4 seconds.
+\nIf the user guesses incorrectly, they must consume their own drink for 4 seconds in our example scenario.
+\n
+\nRound 2:
+\nHaving already revealed one of their cards from the previous turn, players must now determine if their card is greater or less than the value of their previous card. In our example, a 4 OF HEARTS was revealed, so it would make sense to guess that the hidden card is higher, given that there are more cards in a standard deck higher than 4. TIP: Watch the cards revealed by other players to more accurately predict the value of the hidden card.
+\n
+\nRound 3:
+\nPlayers must now decide if their third hidden card is more likely to be inside or outside of the range of their previous two cards. For example, if your first card was a 4, and your second card was a KING, it is likely that your third hidden card will now be between these two values. If however, your previous two cards were only a number or two apart, it would probably make more sense to guess that the hidden card will be revealed as outside of their range. Ie. If you’ve got a 3 and a 5, it’s not very likely that your next card that you flip over is going to be a 4, so in this case you would guess “OUTSIDE.”
+\nNote: If you draw a card that is the same value as your bottom and top range, it is considered “INSIDE” the range of the cards.
+\n
+\nRound 4:
+\nChoose a suit and hope that your final card is revealed to be that suit.
+\nTIP: Don’t just choose randomly! Think about the previous cards that you’ve drawn, as well as the cards of others.
+\n
+\nAces = 1
+\nJack = 11
+\nQueen = 12
+\nKing = 13
+\n
+\n(We’re hardcore here, so face cards are worth their actually values, rather than the lame player’s way of making all face cards worth 10.)</string>
 
 </resources>
