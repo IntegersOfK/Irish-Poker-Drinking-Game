@@ -24,6 +24,7 @@ public class IrishPokerActivity extends Activity {
 	public static Card card1, card2, card3, card4;
 	public static int NUMBEROFPLAYERS;
 	
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
