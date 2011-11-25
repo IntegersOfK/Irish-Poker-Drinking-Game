@@ -77,7 +77,6 @@ public class Round2 extends Activity{
         	currentPlayer = IrishPokerActivity.player10;
         	break;
         }
-        
 		
         
 		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardNum]);
@@ -168,30 +167,36 @@ public class Round2 extends Activity{
 			break;
 		case 4:
 			IrishPokerActivity.player4 = currentPlayer;
+			Log.i(LOG, "Saved player4");
 			break;
 		case 5:
 			IrishPokerActivity.player5 = currentPlayer;
+			Log.i(LOG, "Saved player5");
 			break;
 		case 6:
 			IrishPokerActivity.player6 = currentPlayer;
+			Log.i(LOG, "Saved player6");
 			break;
 		case 7:
 			IrishPokerActivity.player7 = currentPlayer;
+			Log.i(LOG, "Saved player7");
 			break;
 		case 8:
 			IrishPokerActivity.player8 = currentPlayer;
+			Log.i(LOG, "Saved player8");
 			break;
 		case 9:
 			IrishPokerActivity.player9 = currentPlayer;
+			Log.i(LOG, "Saved player9");
 			break;
 		case 10:
 			IrishPokerActivity.player10 = currentPlayer;
+			Log.i(LOG, "Saved player10");
 			break;
 		default:
 			Log.e(LOG, "Couldn't save player.");
 		}		
 	}
-	
 	
 
 	public Button mNextButton, mHideButton;
