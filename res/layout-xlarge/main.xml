@@ -40,7 +40,8 @@
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small" android:layout_marginLeft="20dp"/>
+                android:src="@drawable/back_small" 
+                android:layout_gravity="center" android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -55,7 +56,9 @@
                 android:id="@+id/imageButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small" />
+                android:src="@drawable/back_small" 
+                android:layout_gravity="center"
+                 android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -70,22 +73,9 @@
                 android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <ImageButton
-                android:id="@+id/imageButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back_small" android:layout_marginRight="20dp"/>
+                android:src="@drawable/back_small"
+                android:layout_gravity="center"
+                 android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -100,50 +90,50 @@
 
         <LinearLayout
             android:id="@+id/linearLayout9"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.35"
+            android:layout_weight="1"
             android:orientation="vertical" >
-            
+
             <ImageButton
                 android:id="@+id/buttonLeftCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back" android:layout_marginLeft="20dp"/>
-
+                android:src="@drawable/back"
+                android:layout_gravity="center"
+                 android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout10"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.30"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
-             <ImageButton
+            <ImageButton
                 android:id="@+id/buttonMainCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back" />
-
+                android:src="@drawable/back" 
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout11"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.35"
+            android:layout_weight="1"
             android:orientation="vertical" >
-             
+
             <ImageButton
                 android:id="@+id/buttonRightCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:src="@drawable/back" android:layout_marginRight="20dp"/>
-            
+                android:src="@drawable/back"
+                android:layout_gravity="center"
+                 android:visibility="gone"/>
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -157,7 +147,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight=".5"
-            android:background="#000000" android:text="BLACK" android:textColor="#FFFFFF"/>
+            android:background="#000000" android:text="BLACK" android:textColor="#FFFFFF"
+             android:visibility="invisible"/>
 
         <Button
             android:id="@+id/redButton"
@@ -165,7 +156,8 @@
             android:layout_height="fill_parent"
             android:layout_weight=".5"
             android:text="RED" android:textColor="#FFFFFF"
-            android:background="#CD0000"/>
+            android:background="#CD0000"
+             android:visibility="invisible"/>
 
     </LinearLayout>
 

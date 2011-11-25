@@ -12,13 +12,16 @@ import android.widget.TextView;
 
 public class Round3 extends Activity {  //is the next card going to be inside or outside of the range of the previous two cards?
 
-
+	private Player currentPlayer;
 	private int cardExplain1, cardExplain2;
 	String LOG = "IrishPokerRound3";
 	private Button mInsideButton, mOutsideButton;
 	private TextView mTextView;
 	private ImageButton mMainCard, mLeftCard, mRightCard;
-
+	private int numOfPlayers;
+	int currentLoop = 0;
+	
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -26,6 +29,11 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round3 Activity");
 		
+		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
+		theRound();
+	}
+	
+	private void theRound(){
 		//Set the textview.
         mTextView = (TextView) findViewById(R.id.textView1);
         //set the mainCard.
@@ -106,6 +114,7 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			}
 		});
 	}
+	
 
 
 	public Button mNextButton;

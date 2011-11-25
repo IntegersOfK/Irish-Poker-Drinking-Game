@@ -22,7 +22,7 @@ public class IrishPokerActivity extends Activity {
 	public static ImageButton mMainCard;
 	public ImageButton mLeftCard, mRightCard;
 	public static Card card1, card2, card3, card4;
-	public int NUMBEROFPLAYERS;
+	public static int NUMBEROFPLAYERS;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -97,22 +97,29 @@ public class IrishPokerActivity extends Activity {
 
     }
     
-    //This is where all of the game logistics are happening.
     private void runGame() {
-
-    	if (NUMBEROFPLAYERS==2){
+    	
     		//Run the first round activity:
             Intent round1Intent = new Intent(IrishPokerActivity.this, Round1.class);
+            Log.i(LOG, "Requesting to start Round1 Activity");
             IrishPokerActivity.this.startActivity(round1Intent);
-            //IrishPokerActivity.this.finish();
+    //      round1Intent.putExtra("KeyName", PlayerNumber);
+            //startActivityForResult(round1Intent, SECONDARY_ACTIVITY_REQUEST_CODE);
+           IrishPokerActivity.this.finish();
     		
     	}
-    	
-       
-    	
         
-        
-	}
+	
+    /**
+	@Override //when the activity is done running with each round/player
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
+        Bundle extras = intent.getExtras();
+        Log.i(LOG, "Activity returned.");
+        Log.i(LOG, "Player " + extras + " just finished with resultCode" + resultCode);
+       // Log.e("RETURNED INTENT!", extras != null ? extras.getString("returnKey"):"nothing returned");
+    }
+    **/
 
 	public static Player player1, player2, player3, player4, player5, player6, player7, player8, player9, player10;
     //Makes the players. (Max 10 players!)
@@ -120,40 +127,50 @@ public class IrishPokerActivity extends Activity {
     	for (int i=0; i==NUMBEROFPLAYERS; i++){
     		switch (i){
     		case 1:
-    			this.player1 = new Player(1);
+    			this.player1 = new Player();
+    			this.player1.playerNumSet(1);
     			break;
     		case 2:
-    			this.player2 = new Player(2);
+    			this.player2 = new Player();
+    			this.player2.playerNumSet(2);
     			break;
     		case 3:
-    			this.player3 = new Player(3);
+    			this.player3 = new Player();
+    			this.player3.playerNumSet(3);
     			break;
     		case 4:
-    			this.player4 = new Player(4);
+    			this.player4 = new Player();
+    			this.player4.playerNumSet(4);
     			break;
     		case 5:
-    			this.player5 = new Player(5);
+    			this.player5 = new Player();
+    			this.player5.playerNumSet(5);
     			break;
     		case 6:
-    			this.player6 = new Player(6);
+    			this.player6 = new Player();
+    			this.player6.playerNumSet(6);
     			break;
     		case 7:
-    			this.player7 = new Player(7);
+    			this.player7 = new Player();
+    			this.player7.playerNumSet(7);
     			break;
     		case 8:
-    			this.player8 = new Player(8);
+    			this.player8 = new Player();
+    			this.player8.playerNumSet(8);
     			break;
     		case 9:
-    			this.player9 = new Player(9);
+    			this.player9 = new Player();
+    			this.player9.playerNumSet(9);
     			break;
     		case 10:
-    			this.player10 = new Player(10);
+    			this.player10 = new Player();
+    			this.player10.playerNumSet(10);
     			break;
     		default:
     			Log.e(LOG, "For some reason, a whole number between 1-10 wasn't selected for players.");
-    			this.player1 = new Player(1);
+    			this.player1 = new Player();
+    			this.player1.playerNumSet(1);
     		}
     	}
     }
-    
 }

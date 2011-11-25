@@ -4,11 +4,38 @@ import android.util.Log;
 
 public class Player {
 
-	private Card card1, card2, card3, card4;
+	public Card card1, card2, card3, card4;
 	private int playerNum;
 	
-	public Player(int playerNumber) {
+	public Player() {
+		
+	}
+	
+	public void playerNumSet(int playerNumber){
 		this.playerNum = playerNumber;
+	}
+	
+	public int getPlayerNum(){
+		return playerNum;
+	}
+	
+	public void setCard (int cardNum, Card card){
+		switch (cardNum){
+			case 1:
+			this.card1 = card;
+			break;
+			case 2:
+				this.card2 = card;
+				break;
+			case 3:
+				this.card3 = card;
+				break;
+			case 4:
+				this.card4 = card;
+				break;
+				default:
+					Log.e("IrishPokerPlayerClass", "Problem setting card.");
+		}
 	}
 	
 	public Card getCard (int cardNum){
