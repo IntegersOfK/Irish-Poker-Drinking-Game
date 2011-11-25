@@ -1,11 +1,16 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,7 +21,7 @@ public class Round1 extends Activity {
 
 	private Player currentPlayer;
 	String LOG = "IrishPokerRound1";
-	Button mBlackButton, mRedButton;
+	Button mBlackButton, mRedButton, mReadyButton;
 	ImageButton mMainCard;
 	private TextView mTextView;
 	private int numOfPlayers;
@@ -33,10 +38,31 @@ public class Round1 extends Activity {
 		Log.i(LOG, "Running Round1 Activity");
 		
 		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
-		theRound();	
+		nextPlayerPrompt();
+		
 		
 	}
 	
+	private void nextPlayerPrompt() {
+		
+		
+		AlertDialog.Builder builder;
+		AlertDialog alertDialog;
+
+		Context mContext = getApplicationContext();
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.nextroundprompt,
+		                               (ViewGroup) findViewById(R.id.layout_root));
+
+		TextView text = (TextView) layout.findViewById(R.id.text);
+		text.setText("Hello, this is a custom dialog!");
+
+		builder = new AlertDialog.Builder(mContext);
+		builder.setView(layout);
+		alertDialog = builder.create();
+		
+	}
+
 	private void theRound(){
 		this.currentLoop++;	
 		Log.i(LOG, "On loop: " + currentLoop);
