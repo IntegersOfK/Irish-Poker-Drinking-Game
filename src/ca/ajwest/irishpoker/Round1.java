@@ -26,9 +26,9 @@ public class Round1 extends Activity {
 	private TextView mTextView;
 	private int numOfPlayers;
 	int currentLoop = 0;
- 
-	
-	
+
+
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -36,32 +36,16 @@ public class Round1 extends Activity {
 		getWindow().setWindowAnimations(android.R.style.Animation_Toast);
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round1 Activity");
-		
+
 		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
-		nextPlayerPrompt();
-		
-		
+		//nextPlayerPrompt();
+		theRound();
+
+ 
 	}
-	
-	private void nextPlayerPrompt() {
-		
-		
-		AlertDialog.Builder builder;
-		AlertDialog alertDialog;
 
-		Context mContext = getApplicationContext();
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.nextroundprompt,
-		                               (ViewGroup) findViewById(R.id.layout_root));
 
-		TextView text = (TextView) layout.findViewById(R.id.text);
-		text.setText("Hello, this is a custom dialog!");
 
-		builder = new AlertDialog.Builder(mContext);
-		builder.setView(layout);
-		alertDialog = builder.create();
-		
-	}
 
 	private void theRound(){
 		this.currentLoop++;	
@@ -136,12 +120,12 @@ public class Round1 extends Activity {
 			}           
 		});
 	}
-	
+
 	private void isAnotherRound(){
 		//first we should save the currentplayer:
 		saveCurrentPlayer();
-		
-		
+
+
 		Log.i(LOG, "About to check if numOfPlayers<currentLoop " + numOfPlayers + " - " + currentLoop );
 		if (numOfPlayers > currentLoop){
 			theRound();
@@ -199,32 +183,32 @@ public class Round1 extends Activity {
 		mNextButton = (Button) findViewById(R.id.blackButton); 
 		mNextButton.setVisibility(View.VISIBLE);
 		mNextButton.setText("Next");
-		
+
 		mNextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-			
-				
+
+
 				//Run the second round activity:
-		        Intent round2Intent = new Intent(Round1.this, Round2.class);
+				Intent round2Intent = new Intent(Round1.this, Round2.class);
 				Round1.this.startActivity(round2Intent);
 				Round1.this.finish();
-				
 
-				
-				 //create a new intent...
-              //  Intent intent = new Intent();
-                //add "returnKey" as a key and assign it the card value
- //I don't really need to send back the playernumber, just say that the result was ok.
-                //intent.putExtra("returnKey", playerNum);
-                //get ready to send the result back to the caller (MainActivity)
-                //and put our intent into it (RESULT_OK will tell the caller that 
-                //we have successfully accomplished our task..
-                //setResult(RESULT_OK);
-                //close this Activity...
-                Log.i(LOG, "Ending Round1 activity");
-                Round1.this.finish();
-				
+
+
+				//create a new intent...
+				//  Intent intent = new Intent();
+				//add "returnKey" as a key and assign it the card value
+				//I don't really need to send back the playernumber, just say that the result was ok.
+				//intent.putExtra("returnKey", playerNum);
+				//get ready to send the result back to the caller (MainActivity)
+				//and put our intent into it (RESULT_OK will tell the caller that 
+				//we have successfully accomplished our task..
+				//setResult(RESULT_OK);
+				//close this Activity...
+				Log.i(LOG, "Ending Round1 activity");
+				Round1.this.finish();
+
 			}           
 		});
-		}
 	}
+}

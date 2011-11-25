@@ -40,11 +40,11 @@ public class Splashscreen extends Activity {
 		mRulesButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Log.i(LOG, "Rules Selected");
-				
+
 				/* Create an Intent that will start the Activity. */
 				Intent rulesIntent = new Intent(Splashscreen.this, Rules.class);
 				Splashscreen.this.startActivity(rulesIntent);
-				
+
 			}	
 		});
 
@@ -87,9 +87,9 @@ public class Splashscreen extends Activity {
 			}           
 		});
 	}
-	
+
 	private void updatePlayerNumText(int num){
 		mPlayerNum.setText(num + "");
 	}
-	
+
 }
