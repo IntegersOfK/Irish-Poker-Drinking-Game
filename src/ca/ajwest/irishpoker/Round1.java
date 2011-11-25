@@ -33,12 +33,19 @@ public class Round1 extends Activity {
 		Log.i(LOG, "Running Round1 Activity");
 		
 		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
+		
 		theRound();	
 		
 	}
 	
 	private void theRound(){
-		this.currentLoop++;	
+		this.currentLoop++;
+		
+		/* Create an Intent that will start the Next Round Prompt Activity. */
+		Intent nextRoundIntent = new Intent(Round1.this, Nextroundprompt.class);
+        nextRoundIntent.putExtra("playerNumKey", currentLoop);
+		Round1.this.startActivity(nextRoundIntent);
+		
 		Log.i(LOG, "On loop: " + currentLoop);
 		//Set the textview.
 		mTextView = (TextView) findViewById(R.id.textView1);
