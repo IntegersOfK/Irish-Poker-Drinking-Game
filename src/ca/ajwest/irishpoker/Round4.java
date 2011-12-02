@@ -2,8 +2,12 @@ package ca.ajwest.irishpoker;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -34,6 +38,11 @@ public class Round4 extends Activity {
 
 	private void theRound(){
 		this.currentLoop++;
+		
+		/* Create an Intent that will start the Next Round Prompt Activity. */
+		Intent nextRoundIntent = new Intent(Round4.this, Nextroundprompt.class);
+        nextRoundIntent.putExtra("playerNumKey", currentLoop);
+		Round4.this.startActivity(nextRoundIntent);
 
 		//Set the textview.
 		mTextView = (TextView) findViewById(R.id.textView1);
@@ -44,6 +53,8 @@ public class Round4 extends Activity {
 		mTopLeftCard = (ImageButton) findViewById(R.id.imageButton1);
 		mTopMiddleCard = (ImageButton) findViewById(R.id.imageButton2);
 		mTopRightCard = (ImageButton) findViewById(R.id.imageButton3);
+		
+		mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
 
 
 		//We have to find the right player again to get it's cards from previous rounds.
@@ -82,9 +93,9 @@ public class Round4 extends Activity {
         }
 
 
-		mTopLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardNum]);
-		mTopMiddleCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardNum]);
-		mTopRightCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card3.cardNum]);
+		mTopLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
+		mTopMiddleCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardIndex]);
+		mTopRightCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card3.cardIndex]);
 		mTopLeftCard.setVisibility(View.VISIBLE);
 		mTopRightCard.setVisibility(View.VISIBLE);
 		mTopMiddleCard.setVisibility(View.VISIBLE);
@@ -216,7 +227,7 @@ public class Round4 extends Activity {
 		Card current = GenerateCard.generateCard();
 		IrishPokerActivity.card4 = current;
 		//flip the card over
-		mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+		mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 		//did user guess correctly?
 
 		if (suitValueSelected == current.returnSuit()){
@@ -227,7 +238,32 @@ public class Round4 extends Activity {
 			mTextView.setText("You were incorrect! Drink for " + current.returnValue() + " seconds.");
 		}
 	}
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
 
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(Round4.this, PreviousCards.class);
+			Round4.this.startActivity(previousCardsIntent);
+			
+		}
 
 
 }

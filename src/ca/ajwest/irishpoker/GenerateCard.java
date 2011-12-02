@@ -16,6 +16,7 @@ public class GenerateCard {
 
 	private static String LOG = "GenerateCardActivity";
 	public static List<Integer> pickedCardList = new ArrayList<Integer>();
+    public static List<Integer> unPickedCardList = new ArrayList<Integer>();
 	public GenerateCard() {
 
 	}
@@ -31,21 +32,28 @@ public class GenerateCard {
 			Log.e(LOG, "All 52 cards have already been distributed!");
 		}else{
 			do{
+//				int min = 1;
+//				int max = 4;
+//				int ranSuit = min + (int)(Math.random() * ((max - min) + 1));
 				int min = 1;
-				int max = 4;
-				int ranSuit = min + (int)(Math.random() * ((max - min) + 1));
-				min = 1;
-				max = 13;
+				int max = 52;
 				int ranValue = min + (int)(Math.random() * ((max - min) + 1));
-				Log.i(LOG, "ranSuit= " + ranSuit + " and ranValue= " + ranValue);
+//				Log.i(LOG, "ranSuit= " + ranSuit + " and ranValue= " + ranValue);
+                Log.i(LOG, "ranValue=" + ranValue);
+                
+                Card c = new Card(ranValue);
+    
+  //              if (pickedCardList.contains(c.cardIndex)){
+                
+  //              }
 
-				Card c = new Card(ranSuit, ranValue);
-				if (pickedCardList.contains(c.cardNum)){
+
+				if (pickedCardList.contains(c.cardIndex)){
 					Log.i(LOG, "Card was already picked! Have to repick. Repicking now.");
 				}else{
 					Log.i(LOG, "Card pick sucessful. (Card wasn't already picked.) Add new card to list.");
-					pickedCardList.add(c.cardNum);
-					Log.i(LOG, "New Card ID is: " + c.cardNum);
+					pickedCardList.add(c.cardIndex);
+					Log.i(LOG, "New Card Index is: " + c.cardIndex);
 					i = 1;
 					return c;
 				}

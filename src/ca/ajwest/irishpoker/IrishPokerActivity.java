@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -173,4 +176,34 @@ public class IrishPokerActivity extends Activity {
     		}
     	}
     }
+    
+    
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(IrishPokerActivity.this, PreviousCards.class);
+			IrishPokerActivity.this.startActivity(previousCardsIntent);
+			
+		}
+ 
+    
 }

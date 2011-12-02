@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,12 +39,18 @@ public class Round2 extends Activity{
 	private void theRound (){
 		this.currentLoop++;
 		
+		/* Create an Intent that will start the Next Round Prompt Activity. */
+		Intent nextRoundIntent = new Intent(Round2.this, Nextroundprompt.class);
+        nextRoundIntent.putExtra("playerNumKey", currentLoop);
+		Round2.this.startActivity(nextRoundIntent);
+		
 		mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
 		mLeftCard = (ImageButton) findViewById(R.id.buttonLeftCard);
 		
 		//Set the textview.
         mTextView = (TextView) findViewById(R.id.textView1);
         mTextView.setText("Click the card that you think will be higher.");
+        mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
         
         //We have to find the right player again to get it's cards from previous rounds.
         currentPlayer = new Player();
@@ -80,7 +89,7 @@ public class Round2 extends Activity{
         
 		
         
-		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardNum]);
+		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
         mLeftCard.setVisibility(View.VISIBLE);
         
         
@@ -92,7 +101,7 @@ public class Round2 extends Activity{
 				currentPlayer.setCard(2, current);
 
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if (current.returnValue()>currentPlayer.card1.returnValue()){ //card is higher. User was correct.
 					if ((currentPlayer.card2.returnValue())==(currentPlayer.card1.returnValue())){ //TODO don't think this works for some reason. Watch out for cards that are the same.
@@ -119,7 +128,7 @@ public class Round2 extends Activity{
 				currentPlayer.setCard(2, current);
 
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if (current.returnValue()<currentPlayer.card1.returnValue()){ //card is higher. User was correct.
 					//TODO if card is the same value (ie. get 2 kings. Make user drink and give drinks)
@@ -214,6 +223,32 @@ public class Round2 extends Activity{
 		});
 	}
 
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(Round2.this, PreviousCards.class);
+			Round2.this.startActivity(previousCardsIntent);
+			
+		}
 
 }
 

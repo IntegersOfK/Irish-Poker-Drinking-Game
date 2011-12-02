@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -41,6 +44,8 @@ public class Round1 extends Activity {
 	private void theRound(){
 		this.currentLoop++;
 		
+		
+		
 		/* Create an Intent that will start the Next Round Prompt Activity. */
 		Intent nextRoundIntent = new Intent(Round1.this, Nextroundprompt.class);
         nextRoundIntent.putExtra("playerNumKey", currentLoop);
@@ -57,6 +62,7 @@ public class Round1 extends Activity {
 		mBlackButton = (Button) findViewById(R.id.blackButton);
 		mRedButton = (Button) findViewById(R.id.redButton);
 		mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
+		mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
 
 		//show the buttons:
 		mBlackButton.setVisibility(View.VISIBLE);
@@ -78,7 +84,7 @@ public class Round1 extends Activity {
 				currentPlayer.setCard(1, current);
 
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was incorrect
 					mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
@@ -101,7 +107,7 @@ public class Round1 extends Activity {
 				currentPlayer.setCard(1, current);
 
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was correct
 					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
@@ -208,4 +214,34 @@ public class Round1 extends Activity {
 			}           
 		});
 		}
+	
+	
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(Round1.this, PreviousCards.class);
+			Round1.this.startActivity(previousCardsIntent);
+			
+		}
+	
+	
 	}

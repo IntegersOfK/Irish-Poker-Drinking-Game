@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -72,6 +75,11 @@ public class Splashscreen extends Activity {
 		mOptionsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Log.i(LOG, "Options Selected");
+				
+				/* Create an Intent that will start the Activity. */
+				Intent previousCardsIntent = new Intent(Splashscreen.this, PreviousCards.class);
+				Splashscreen.this.startActivity(previousCardsIntent);
+				
 			}           
 		});
 
@@ -91,5 +99,33 @@ public class Splashscreen extends Activity {
 	private void updatePlayerNumText(int num){
 		mPlayerNum.setText(num + "");
 	}
+	
+	
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(Splashscreen.this, PreviousCards.class);
+			Splashscreen.this.startActivity(previousCardsIntent);
+			
+		}
 	
 }

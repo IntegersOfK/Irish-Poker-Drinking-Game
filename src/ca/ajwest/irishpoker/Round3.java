@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,6 +39,10 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 	private void theRound(){
 		this.currentLoop++;
 
+		/* Create an Intent that will start the Next Round Prompt Activity. */
+		Intent nextRoundIntent = new Intent(Round3.this, Nextroundprompt.class);
+        nextRoundIntent.putExtra("playerNumKey", currentLoop);
+		Round3.this.startActivity(nextRoundIntent);
 
 		//Set the textview.
         mTextView = (TextView) findViewById(R.id.textView1);
@@ -45,6 +52,8 @@ public class Round3 extends Activity {  //is the next card going to be inside or
         //set the previouscards:
         mLeftCard = (ImageButton) findViewById(R.id.buttonLeftCard);
         mRightCard = (ImageButton) findViewById(R.id.buttonRightCard);
+        
+        mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
         
       //We have to find the right player again to get it's cards from previous rounds.
         currentPlayer = new Player();
@@ -82,8 +91,8 @@ public class Round3 extends Activity {  //is the next card going to be inside or
         }
         
         
-		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardNum]);
-		mRightCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardNum]);
+		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
+		mRightCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardIndex]);
 		mLeftCard.setVisibility(View.VISIBLE);
 		mRightCard.setVisibility(View.VISIBLE);
 
@@ -110,7 +119,7 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(3, current);
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is incorrect. " + current.returnValue() + " is less than " + cardExplain1 + " or greater than " + cardExplain2 + ".");
 					mTextView.setText("You were incorrect. You must drink for " + current.returnValue() + " seconds.");
@@ -135,7 +144,7 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(3, current);
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardNum]);
+				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " or less than " + cardExplain2 + ".");
 					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
@@ -237,6 +246,31 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			}           
 		});
 	}
+	   @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.options_menu, menu);
+			return true;
+		}
 
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle item selection
+			switch (item.getItemId()) {
+			case R.id.previous_cards:
+				previousCardsSelected();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
+
+		private void previousCardsSelected() {
+
+			/* Create an Intent that will start the Activity. */
+			Intent previousCardsIntent = new Intent(Round3.this, PreviousCards.class);
+			Round3.this.startActivity(previousCardsIntent);
+			
+		}
 
 }
