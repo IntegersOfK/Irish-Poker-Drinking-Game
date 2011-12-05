@@ -18,13 +18,6 @@ public class IrishPokerActivity extends Activity {
 	public static int imageArr[] = new int[53]; //52 cards plus the back of a card
 	public static TextView mTextView;
 	public static Button mNextButton;
-	public static ImageButton mFirstPickedCard;
-	public static ImageButton mSecondPickedCard;
-	public static ImageButton mThirdPickedCard;
-	public ImageButton mFourthPickedCard, mHigherButton1, mHigherButton2;
-	public static ImageButton mMainCard;
-	public ImageButton mLeftCard, mRightCard;
-	public static Card card1, card2, card3, card4;
 	public static int NUMBEROFPLAYERS;
 	
 	/** Called when the activity is first created. */
@@ -113,16 +106,7 @@ public class IrishPokerActivity extends Activity {
     	}
         
 	
-    /**
-	@Override //when the activity is done running with each round/player
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
-        super.onActivityResult(requestCode, resultCode, intent);
-        Bundle extras = intent.getExtras();
-        Log.i(LOG, "Activity returned.");
-        Log.i(LOG, "Player " + extras + " just finished with resultCode" + resultCode);
-       // Log.e("RETURNED INTENT!", extras != null ? extras.getString("returnKey"):"nothing returned");
-    }
-    **/
+ 
 
 	public static Player player1, player2, player3, player4, player5, player6, player7, player8, player9, player10;
     //Makes the players. (Max 10 players!)
@@ -197,13 +181,13 @@ public class IrishPokerActivity extends Activity {
 			}
 		}
 
+
 		private void previousCardsSelected() {
 
 			/* Create an Intent that will start the Activity. */
 			Intent previousCardsIntent = new Intent(IrishPokerActivity.this, PreviousCards.class);
 			IrishPokerActivity.this.startActivity(previousCardsIntent);
-			
 		}
- 
+		
     
 }

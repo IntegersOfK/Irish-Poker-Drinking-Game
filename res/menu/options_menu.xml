@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	
 	<item android:id="@+id/previous_cards" android:title="@string/previous_cards" android:showAsAction="ifRoom|withText" android:icon="@drawable/ic_launcher" />
+	<item android:id="@+id/restart_game" android:title="@string/restart_game" android:icon="@drawable/ic_launcher" android:showAsAction="ifRoom|withText"></item>
 
 </menu>
 

@@ -1,6 +1,8 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,17 +34,13 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round3 Activity");
 
-		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
+		numOfPlayers = Splashscreen.numPlayers;
+		generalDialog("Round 3", "Player 1's turn!", "Continue", false); //the first player needs his/her own dialog popup request because the loop initiates the others.
 		theRound();
 	}
 
 	private void theRound(){
 		this.currentLoop++;
-
-		/* Create an Intent that will start the Next Round Prompt Activity. */
-		Intent nextRoundIntent = new Intent(Round3.this, Nextroundprompt.class);
-        nextRoundIntent.putExtra("playerNumKey", currentLoop);
-		Round3.this.startActivity(nextRoundIntent);
 
 		//Set the textview.
         mTextView = (TextView) findViewById(R.id.textView1);
@@ -122,15 +120,16 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is incorrect. " + current.returnValue() + " is less than " + cardExplain1 + " or greater than " + cardExplain2 + ".");
-					mTextView.setText("You were incorrect. You must drink for " + current.returnValue() + " seconds.");
+					generalDialog("Incorrect" , "You were incorrect. You must drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}else{
 					Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " and less than " + cardExplain2 + ".");
-					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
+					generalDialog("Correct" , "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+
+					
 				}
 				//hide the buttons
 				mOutsideButton.setVisibility(View.GONE);
 				mInsideButton.setVisibility(View.GONE);
-				isAnotherRound();
 			}
 
 		});
@@ -147,22 +146,21 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " or less than " + cardExplain2 + ".");
-					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
+					generalDialog("Correct" , "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}else{
 					Log.i(LOG, "User is incorrect. " + current.returnValue() + " is greater than " + cardExplain1 + " and less than " + cardExplain2 + ".");
-					mTextView.setText("You were incorrect. You must drink for " + current.returnValue() + " seconds.");
+					generalDialog("Incorrect" , "You were incorrect. You must drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}
 
 				//hide the buttons
 				mOutsideButton.setVisibility(View.GONE);
 				mInsideButton.setVisibility(View.GONE);
-				isAnotherRound();
 
 
 			}
 		});
 	}
-
+	
 
 	private void isAnotherRound(){
 		//first we should save the currentplayer:
@@ -170,12 +168,39 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 
 		Log.i(LOG, "About to check if numOfPlayers<currentLoop " + numOfPlayers + " - " + currentLoop );
 		if (numOfPlayers > currentLoop){
+			String playerText = currentLoop + 1 + "";
+			generalDialog("Continue","Player " + playerText + "'s turn.", "Continue", false);
 			theRound();
 		}else{
 			Log.i(LOG, "Done looping. Enabling Next Button");
 			nextButton3();
 		}
 	}
+
+	private void generalDialog(String title, String message, String confirmText, final boolean callIsAnotherRound) {
+
+		new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_menu_more)
+		.setTitle(title)
+		.setMessage(message)
+		.setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//          	Do stuff here        
+				if (callIsAnotherRound==true){
+					isAnotherRound();
+				}
+			} 
+
+		})
+		//.setNegativeButton("Cancel", null) No ability to cancel.
+		.show();
+	}
+	
+	
+	
+	
 
 	private void saveCurrentPlayer() {
 		Log.i(LOG, "Saving player.");
@@ -246,6 +271,8 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			}           
 		});
 	}
+
+
 	   @Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			MenuInflater inflater = getMenuInflater();
@@ -260,6 +287,9 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			case R.id.previous_cards:
 				previousCardsSelected();
 				return true;
+			case R.id.restart_game:
+				restartGameSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
@@ -272,5 +302,34 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			Round3.this.startActivity(previousCardsIntent);
 			
 		}
+
+		private void restartGameSelected() {
+			
+			 //Ask the user if they want to quit
+	        new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle("Restart?")
+	        .setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
+	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
+
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+
+	            	//Start splashscreen activity.
+	    			Intent splashscreenIntent = new Intent(Round3.this, Splashscreen.class);
+	    			Round3.this.startActivity(splashscreenIntent);
+	                //Now we have to reset the picked card list activity so that the pickedcardlist and players will all reset.
+	                GenerateCard.clearPickedCardsList();
+	              //Stop activity
+	                Round3.this.finish();
+	                
+	            }
+
+	        })
+	        .setNegativeButton("Cancel", null)
+	        .show();
+			
+		}
+		
 
 }

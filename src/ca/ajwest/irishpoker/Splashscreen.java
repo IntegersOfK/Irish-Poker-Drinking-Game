@@ -39,7 +39,9 @@ public class Splashscreen extends Activity {
 		mOptionsButton = (Button) findViewById(R.id.button4);
 		mStartButton = (Button) findViewById(R.id.button5);
 
-
+		updatePlayerNumText(numPlayers);
+		
+		
 		mRulesButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Log.i(LOG, "Rules Selected");

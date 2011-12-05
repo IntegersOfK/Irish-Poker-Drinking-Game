@@ -32,21 +32,13 @@ public class GenerateCard {
 			Log.e(LOG, "All 52 cards have already been distributed!");
 		}else{
 			do{
-//				int min = 1;
-//				int max = 4;
-//				int ranSuit = min + (int)(Math.random() * ((max - min) + 1));
 				int min = 1;
 				int max = 52;
 				int ranValue = min + (int)(Math.random() * ((max - min) + 1));
-//				Log.i(LOG, "ranSuit= " + ranSuit + " and ranValue= " + ranValue);
                 Log.i(LOG, "ranValue=" + ranValue);
                 
                 Card c = new Card(ranValue);
     
-  //              if (pickedCardList.contains(c.cardIndex)){
-                
-  //              }
-
 
 				if (pickedCardList.contains(c.cardIndex)){
 					Log.i(LOG, "Card was already picked! Have to repick. Repicking now.");
@@ -60,6 +52,10 @@ public class GenerateCard {
 			}while(i==0);
 		}
 		return null;
+	}
+	
+	public static void clearPickedCardsList(){
+		GenerateCard.pickedCardList.clear();
 	}
 
 }

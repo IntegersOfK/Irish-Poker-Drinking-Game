@@ -1,8 +1,14 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 
@@ -18,11 +24,6 @@ import android.widget.ImageView;
 			Log.i(LOG, "Previous Cards Requested and running.");
 			Log.i(LOG, "Generating small cards array.");
 			
-			//Get card resources (their names basically)
-			//mImageViewPrevCards.setImageResource(R.drawable.back_small);
-	        
-	       
-	        
 			
 	        
 	        Log.i(LOG, "Starting loop.");
@@ -253,5 +254,10 @@ import android.widget.ImageView;
 
 			}
 		}
+		
+		//TODO make menus work. Since we don't really know which round started this though, the "Reset Game" button needs some kind of workaround.
+	 
+		
+		
 	}
 

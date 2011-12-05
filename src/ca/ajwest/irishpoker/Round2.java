@@ -1,6 +1,8 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +24,8 @@ public class Round2 extends Activity{
 	private ImageButton mMainCard, mLeftCard;
 	private int numOfPlayers;
 	int currentLoop = 0;
-	
-	
+
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -31,68 +33,66 @@ public class Round2 extends Activity{
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round2 Activity");
 
-		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
+		numOfPlayers = Splashscreen.numPlayers;
+		generalDialog("Round 2", "Player 1's turn!", "Continue", false); //the first player needs his/her own dialog popup request because the loop initiates the others.
 		theRound();	
-		
+
 	}
 
 	private void theRound (){
 		this.currentLoop++;
+
 		
-		/* Create an Intent that will start the Next Round Prompt Activity. */
-		Intent nextRoundIntent = new Intent(Round2.this, Nextroundprompt.class);
-        nextRoundIntent.putExtra("playerNumKey", currentLoop);
-		Round2.this.startActivity(nextRoundIntent);
-		
+
 		mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
 		mLeftCard = (ImageButton) findViewById(R.id.buttonLeftCard);
-		
+
 		//Set the textview.
-        mTextView = (TextView) findViewById(R.id.textView1);
-        mTextView.setText("Click the card that you think will be higher.");
-        mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
-        
-        //We have to find the right player again to get it's cards from previous rounds.
-        currentPlayer = new Player();
-        switch(currentLoop){
-        case 1:
-        	currentPlayer = IrishPokerActivity.player1;
-        	break;
-        case 2:
-        	currentPlayer = IrishPokerActivity.player2;
-        	break;
-        case 3:
-        	currentPlayer = IrishPokerActivity.player3;
-        	break;
-        case 4:
-        	currentPlayer = IrishPokerActivity.player4;
-        	break;
-        case 5:
-        	currentPlayer = IrishPokerActivity.player5;
-        	break;
-        case 6:
-        	currentPlayer = IrishPokerActivity.player6;
-        	break;
-        case 7:
-        	currentPlayer = IrishPokerActivity.player7;
-        	break;
-        case 8:
-        	currentPlayer = IrishPokerActivity.player8;
-        	break;
-        case 9:
-        	currentPlayer = IrishPokerActivity.player9;
-        	break;
-        case 10:
-        	currentPlayer = IrishPokerActivity.player10;
-        	break;
-        }
-        
-		
-        
+		mTextView = (TextView) findViewById(R.id.textView1);
+		mTextView.setText("Click the card that you think will be higher.");
+		mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
+
+		//We have to find the right player again to get it's cards from previous rounds.
+		currentPlayer = new Player();
+		switch(currentLoop){
+		case 1:
+			currentPlayer = IrishPokerActivity.player1;
+			break;
+		case 2:
+			currentPlayer = IrishPokerActivity.player2;
+			break;
+		case 3:
+			currentPlayer = IrishPokerActivity.player3;
+			break;
+		case 4:
+			currentPlayer = IrishPokerActivity.player4;
+			break;
+		case 5:
+			currentPlayer = IrishPokerActivity.player5;
+			break;
+		case 6:
+			currentPlayer = IrishPokerActivity.player6;
+			break;
+		case 7:
+			currentPlayer = IrishPokerActivity.player7;
+			break;
+		case 8:
+			currentPlayer = IrishPokerActivity.player8;
+			break;
+		case 9:
+			currentPlayer = IrishPokerActivity.player9;
+			break;
+		case 10:
+			currentPlayer = IrishPokerActivity.player10;
+			break;
+		}
+
+
+
 		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
-        mLeftCard.setVisibility(View.VISIBLE);
-        
-        
+		mLeftCard.setVisibility(View.VISIBLE);
+
+
 		mMainCard.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Log.i(LOG, "User thinks invis card is higher.");
@@ -104,19 +104,18 @@ public class Round2 extends Activity{
 				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if (current.returnValue()>currentPlayer.card1.returnValue()){ //card is higher. User was correct.
-					if ((currentPlayer.card2.returnValue())==(currentPlayer.card1.returnValue())){ //TODO don't think this works for some reason. Watch out for cards that are the same.
-						//if card is the same value (ie. get 2 kings. Make user drink and give drinks)
-						mTextView.setText("They're the same! You AND somebody else must drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
-					}else{
-						mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
-					}
+					//		if ((currentPlayer.card2.returnValue())==(currentPlayer.card1.returnValue())){ //TODO don't think this works for some reason. Watch out for cards that are the same.
+					//			//if card is the same value (ie. get 2 kings. Make user drink and give drinks)
+					//			mTextView.setText("They're the same! You AND somebody else must drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
+					//		}else{
+					//mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
+					generalDialog("Correct", "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					//		}
 				}else{ //the other was higher, user was incorrect
-					mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
-				}
+					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);				}
 				//Make the cards non-clickable again.
 				mMainCard.setOnClickListener(null);
 				mLeftCard.setOnClickListener(null);
-				isAnotherRound();
 			}
 		});
 
@@ -132,32 +131,54 @@ public class Round2 extends Activity{
 				//did user guess correctly?
 				if (current.returnValue()<currentPlayer.card1.returnValue()){ //card is higher. User was correct.
 					//TODO if card is the same value (ie. get 2 kings. Make user drink and give drinks)
-					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
+					//mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
+					generalDialog("Correct", "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}else{ //the other was higher, user was incorrect
-					mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 3!");
+					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}
 				//Make the cards non-clickable again.
 				mMainCard.setOnClickListener(null);
 				mLeftCard.setOnClickListener(null);
-				isAnotherRound();
 			}
 		});
 	}
-	
+
 	private void isAnotherRound(){
 		//first we should save the currentplayer:
 		saveCurrentPlayer();
-		
-		
+
 		Log.i(LOG, "About to check if numOfPlayers<currentLoop " + numOfPlayers + " - " + currentLoop );
 		if (numOfPlayers > currentLoop){
+			String playerText = currentLoop + 1 + "";
+			generalDialog("Continue","Player " + playerText + "'s turn.", "Continue", false);
 			theRound();
 		}else{
 			Log.i(LOG, "Done looping. Enabling Next Button");
 			nextButton2();
 		}
 	}
-	
+
+	private void generalDialog(String title, String message, String confirmText, final boolean callIsAnotherRound) {
+
+		new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_menu_more)
+		.setTitle(title)
+		.setMessage(message)
+		.setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//          	Do stuff here        
+				if (callIsAnotherRound==true){
+					isAnotherRound();
+				}
+			} 
+
+		})
+		//.setNegativeButton("Cancel", null) No ability to cancel.
+		.show();
+	}
+
 	private void saveCurrentPlayer() {
 		Log.i(LOG, "Saving player.");
 		int tempCompare = currentPlayer.getPlayerNum();
@@ -200,8 +221,8 @@ public class Round2 extends Activity{
 			Log.e(LOG, "Couldn't save player.");
 		}		
 	}
-	
-	
+
+
 
 	public Button mNextButton, mHideButton;
 	private void nextButton2(){
@@ -213,42 +234,73 @@ public class Round2 extends Activity{
 		mNextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Log.i(LOG, "Round3");
-				
-				 //Run the third round activity:
-		        Intent round3Intent = new Intent(Round2.this, Round3.class);
+
+				//Run the third round activity:
+				Intent round3Intent = new Intent(Round2.this, Round3.class);
 				Round2.this.startActivity(round3Intent);
 				Round2.this.finish();
-				
+
 			}           
 		});
 	}
 
-	   @Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.options_menu, menu);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.previous_cards:
+			previousCardsSelected();
 			return true;
+		case R.id.restart_game:
+			restartGameSelected();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
+	}
 
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// Handle item selection
-			switch (item.getItemId()) {
-			case R.id.previous_cards:
-				previousCardsSelected();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+	private void previousCardsSelected() {
+
+		/* Create an Intent that will start the Activity. */
+		Intent previousCardsIntent = new Intent(Round2.this, PreviousCards.class);
+		Round2.this.startActivity(previousCardsIntent);
+
+	}
+
+	private void restartGameSelected() {
+
+		//Ask the user if they want to quit
+		new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setTitle("Restart?")
+		.setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
+		.setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				//Start splashscreen activity.
+				Intent splashscreenIntent = new Intent(Round2.this, Splashscreen.class);
+				Round2.this.startActivity(splashscreenIntent);
+				//Now we have to reset the picked card list activity so that the pickedcardlist and players will all reset.
+				GenerateCard.clearPickedCardsList();
+				//Stop activity
+				Round2.this.finish();
+
 			}
-		}
 
-		private void previousCardsSelected() {
+		})
+		.setNegativeButton("Cancel", null)
+		.show();
 
-			/* Create an Intent that will start the Activity. */
-			Intent previousCardsIntent = new Intent(Round2.this, PreviousCards.class);
-			Round2.this.startActivity(previousCardsIntent);
-			
-		}
+	}
 
 }
 

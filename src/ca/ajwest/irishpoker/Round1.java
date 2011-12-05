@@ -1,7 +1,10 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,8 +38,8 @@ public class Round1 extends Activity {
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round1 Activity");
 		
-		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
-		
+		numOfPlayers = Splashscreen.numPlayers;
+		generalDialog("Round 1", "Player 1's turn!", "Continue", false); //the first player needs his/her own dialog popup request because the loop initiates the others.
 		theRound();	
 		
 	}
@@ -44,12 +47,6 @@ public class Round1 extends Activity {
 	private void theRound(){
 		this.currentLoop++;
 		
-		
-		
-		/* Create an Intent that will start the Next Round Prompt Activity. */
-		Intent nextRoundIntent = new Intent(Round1.this, Nextroundprompt.class);
-        nextRoundIntent.putExtra("playerNumKey", currentLoop);
-		Round1.this.startActivity(nextRoundIntent);
 		
 		Log.i(LOG, "On loop: " + currentLoop);
 		//Set the textview.
@@ -87,15 +84,17 @@ public class Round1 extends Activity {
 				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was incorrect
-					mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}else{ //suit is black, user was correct
-					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+					generalDialog("Correct!","You were correct. Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}
 
 				//hide the buttons
 				mBlackButton.setVisibility(View.GONE);
 				mRedButton.setVisibility(View.GONE);
-				isAnotherRound();//enables the next button
+				
 			}           
 		});
 
@@ -110,33 +109,59 @@ public class Round1 extends Activity {
 				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was correct
-					mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
+					generalDialog("Correct!","You were correct. Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}else{ //suit is black, user was incorrect
-					mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
+				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds.");
+					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 				}
 
 				//hide the buttons
 				mBlackButton.setVisibility(View.GONE);
 				mRedButton.setVisibility(View.GONE);
-				isAnotherRound(); //enables the first next button
 
 			}           
 		});
 	}
 	
+
 	private void isAnotherRound(){
 		//first we should save the currentplayer:
 		saveCurrentPlayer();
 		
-		
 		Log.i(LOG, "About to check if numOfPlayers<currentLoop " + numOfPlayers + " - " + currentLoop );
 		if (numOfPlayers > currentLoop){
+			String playerText = currentLoop + 1 + "";
+			generalDialog("Continue","Player " + playerText + "'s turn.", "Continue", false);
 			theRound();
 		}else{
 			Log.i(LOG, "Done looping. Enabling Next Button");
 			nextButton1();
 		}
 	}
+	
+	private void generalDialog(String title, String message, String confirmText, final boolean callIsAnotherRound) {
+		
+        new AlertDialog.Builder(this)
+        .setIcon(android.R.drawable.ic_menu_more)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//          	Do stuff here        
+            	if (callIsAnotherRound==true){
+            		isAnotherRound();
+            	}
+            } 
+
+        })
+        //.setNegativeButton("Cancel", null) No ability to cancel.
+        .show();
+	}
+	
+	
 
 	private void saveCurrentPlayer() {
 		Log.i(LOG, "Saving player.");
@@ -193,21 +218,7 @@ public class Round1 extends Activity {
 				
 				//Run the second round activity:
 		        Intent round2Intent = new Intent(Round1.this, Round2.class);
-				Round1.this.startActivity(round2Intent);
-				Round1.this.finish();
-				
-
-				
-				 //create a new intent...
-              //  Intent intent = new Intent();
-                //add "returnKey" as a key and assign it the card value
- //I don't really need to send back the playernumber, just say that the result was ok.
-                //intent.putExtra("returnKey", playerNum);
-                //get ready to send the result back to the caller (MainActivity)
-                //and put our intent into it (RESULT_OK will tell the caller that 
-                //we have successfully accomplished our task..
-                //setResult(RESULT_OK);
-                //close this Activity...
+				Round1.this.startActivity(round2Intent);				
                 Log.i(LOG, "Ending Round1 activity");
                 Round1.this.finish();
 				
@@ -230,6 +241,9 @@ public class Round1 extends Activity {
 			case R.id.previous_cards:
 				previousCardsSelected();
 				return true;
+			case R.id.restart_game:
+				restartGameSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
@@ -242,6 +256,35 @@ public class Round1 extends Activity {
 			Round1.this.startActivity(previousCardsIntent);
 			
 		}
+
+		private void restartGameSelected() {
+			
+			 //Ask the user if they want to quit
+	        new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle("Restart?")
+	        .setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
+	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
+
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+
+	            	//Start splashscreen activity.
+	    			Intent splashscreenIntent = new Intent(Round1.this, Splashscreen.class);
+	    			Round1.this.startActivity(splashscreenIntent);
+	                //Now we have to reset the picked card list activity so that the pickedcardlist and players will all reset.
+	                GenerateCard.clearPickedCardsList();
+	              //Stop Round 1 activity
+	                Round1.this.finish();
+	                
+	            }
+
+	        })
+	        .setNegativeButton("Cancel", null)
+	        .show();
+			
+		}
+ 
 	
 	
 	}

@@ -1,7 +1,9 @@
 package ca.ajwest.irishpoker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,17 +34,15 @@ public class Round4 extends Activity {
 		setContentView(R.layout.main);
 		Log.i(LOG, "Running Round4 Activity");
 
-		numOfPlayers = IrishPokerActivity.NUMBEROFPLAYERS;
+		numOfPlayers = Splashscreen.numPlayers;
+		generalDialog("Round 4", "Player 1's turn!", "Continue", false); //the first player needs his/her own dialog popup request because the loop initiates the others.
 		theRound();
 	}
 
 	private void theRound(){
 		this.currentLoop++;
 		
-		/* Create an Intent that will start the Next Round Prompt Activity. */
-		Intent nextRoundIntent = new Intent(Round4.this, Nextroundprompt.class);
-        nextRoundIntent.putExtra("playerNumKey", currentLoop);
-		Round4.this.startActivity(nextRoundIntent);
+		
 
 		//Set the textview.
 		mTextView = (TextView) findViewById(R.id.textView1);
@@ -118,7 +118,6 @@ public class Round4 extends Activity {
 				Log.i(LOG, "Selected Heart");
 				suitValueSelect(1);
 				dialog.dismiss();
-				isAnotherRound();
 			}
 		});
 
@@ -128,7 +127,6 @@ public class Round4 extends Activity {
 				Log.i(LOG, "Selected Spade");
 				suitValueSelect(3);
 				dialog.dismiss();
-				isAnotherRound();
 			}
 		});
 
@@ -138,7 +136,6 @@ public class Round4 extends Activity {
 				Log.i(LOG, "Selected Diamond");
 				suitValueSelect(2);
 				dialog.dismiss();
-				isAnotherRound();
 			}
 		});
 
@@ -148,13 +145,35 @@ public class Round4 extends Activity {
 				Log.i(LOG, "Selected Club");
 				suitValueSelect(4); 
 				dialog.dismiss();
-				isAnotherRound();
 			}
 		});
 		dialog.show();
 
 	}
+	
+	
 
+	private void generalDialog(String title, String message, String confirmText, final boolean callIsAnotherRound) {
+
+		new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_menu_more)
+		.setTitle(title)
+		.setMessage(message)
+		.setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//          	Do stuff here        
+				if (callIsAnotherRound==true){
+					isAnotherRound();
+				}
+			} 
+
+		})
+		//.setNegativeButton("Cancel", null) No ability to cancel.
+		.show();
+	}
+	
 
 	private void isAnotherRound(){
 		//first we should save the currentplayer:
@@ -162,10 +181,39 @@ public class Round4 extends Activity {
 
 		Log.i(LOG, "About to check if numOfPlayers<currentLoop " + numOfPlayers + " - " + currentLoop );
 		if (numOfPlayers > currentLoop){
+			String playerText = currentLoop + 1 + "";
+			generalDialog("Continue","Player " + playerText + "'s turn.", "Continue", false);
 			theRound();
 		}else{
-			Log.i(LOG, "Done looping. Enabling Next Button");
+			Log.i(LOG, "Done looping.");
 			Log.i(LOG, "Game over! YAY!");
+			 
+			
+			//Ask the user if they want to restart
+	        new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle("Game Over!")
+	        .setMessage("Play again?")
+	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
+
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+
+	            	//Start splashscreen activity.
+	    			Intent splashscreenIntent = new Intent(Round4.this, Splashscreen.class);
+	    			Round4.this.startActivity(splashscreenIntent);
+	                //Now we have to reset the picked card list activity so that the pickedcardlist and players will all reset.
+	                GenerateCard.clearPickedCardsList();
+	              //Stop activity
+	                Round4.this.finish();
+	                
+	            }
+
+	        })
+	        .setNegativeButton("Cancel", null)
+	        .show();
+			
+			
 		}
 	}
 
@@ -225,19 +273,22 @@ public class Round4 extends Activity {
 
 		Log.i(LOG, "User has selected suit value: " + suitValueSelected );
 		Card current = GenerateCard.generateCard();
-		IrishPokerActivity.card4 = current;
+		currentPlayer.card4 = current;
 		//flip the card over
 		mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
 		//did user guess correctly?
 
 		if (suitValueSelected == current.returnSuit()){
 			Log.i(LOG, "User guessed correctly.");
-			mTextView.setText("You were correct! Make somebody else drink for " + current.returnValue() + " seconds.");
+			generalDialog("Correct" , "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 		}else{
 			Log.i(LOG, "User guessed incorrectly");
-			mTextView.setText("You were incorrect! Drink for " + current.returnValue() + " seconds.");
+			generalDialog("Incorrect" , "You were incorrect! Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
 		}
 	}
+
+
+	
 	   @Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			MenuInflater inflater = getMenuInflater();
@@ -252,6 +303,9 @@ public class Round4 extends Activity {
 			case R.id.previous_cards:
 				previousCardsSelected();
 				return true;
+			case R.id.restart_game:
+				restartGameSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
@@ -262,6 +316,34 @@ public class Round4 extends Activity {
 			/* Create an Intent that will start the Activity. */
 			Intent previousCardsIntent = new Intent(Round4.this, PreviousCards.class);
 			Round4.this.startActivity(previousCardsIntent);
+			
+		}
+
+		private void restartGameSelected() {
+			
+			 //Ask the user if they want to quit
+	        new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle("Restart?")
+	        .setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
+	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
+
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+
+	            	//Start splashscreen activity.
+	    			Intent splashscreenIntent = new Intent(Round4.this, Splashscreen.class);
+	    			Round4.this.startActivity(splashscreenIntent);
+	                //Now we have to reset the picked card list activity so that the pickedcardlist and players will all reset.
+	                GenerateCard.clearPickedCardsList();
+	              //Stop activity
+	                Round4.this.finish();
+	                
+	            }
+
+	        })
+	        .setNegativeButton("Cancel", null)
+	        .show();
 			
 		}
 
