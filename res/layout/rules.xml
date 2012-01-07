@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Irish Poker Rules!"
+        android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ScrollView
@@ -28,13 +29,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/rules"
+                android:textColor="#000000"
                 android:textAppearance="?android:attr/textAppearanceMedium" android:layout_margin="20dip"/>
 
             <Button
                 android:id="@+id/OKButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OK" />
+                android:text="OK"
+                android:background="@drawable/custom_button" />
 
         </LinearLayout>
     </ScrollView>

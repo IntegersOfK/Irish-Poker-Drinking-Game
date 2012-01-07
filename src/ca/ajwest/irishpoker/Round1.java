@@ -23,7 +23,7 @@ public class Round1 extends Activity {
 	private Player currentPlayer;
 	String LOG = "IrishPokerRound1";
 	Button mBlackButton, mRedButton;
-	ImageButton mMainCard;
+	Button mMainCard;
 	private TextView mTextView;
 	private int numOfPlayers;
 	int currentLoop = 0;
@@ -58,8 +58,8 @@ public class Round1 extends Activity {
 		//make buttons
 		mBlackButton = (Button) findViewById(R.id.blackButton);
 		mRedButton = (Button) findViewById(R.id.redButton);
-		mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
-		mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
+		mMainCard = (Button) findViewById(R.id.buttonMainCard);
+		mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
 
 		//show the buttons:
 		mBlackButton.setVisibility(View.VISIBLE);
@@ -80,15 +80,34 @@ public class Round1 extends Activity {
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(1, current);
 
+				//Checking options to see if face cards are worth 10 or not 
+				int currentCardValue = current.returnValue(); 
+				if (Splashscreen.option1 == 2){
+					if (currentCardValue > 10) {
+						currentCardValue = 10;
+					}
+				}
+				
+				//Checking options to see if we're supposed to choose a random player to drink or not.
+				String dialogText = "Make somebody else drink for " + currentCardValue + " seconds."; 
+				if (Splashscreen.option2 == 2){
+					int min = 1;
+					int max = numOfPlayers;
+					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
+				}
+				
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
+				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was incorrect
 				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
-					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", "Done Drinking", true);
 				}else{ //suit is black, user was correct
 				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
-					generalDialog("Correct!","You were correct. Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
 				}
 
 				//hide the buttons
@@ -104,16 +123,36 @@ public class Round1 extends Activity {
 				//Generate a card
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(1, current);
+				
+				//Checking options to see if face cards are worth 10 or not 
+				int currentCardValue = current.returnValue(); 
+				if (Splashscreen.option1 == 2){
+					if (currentCardValue > 10) {
+						currentCardValue = 10;
+					}
+				}
+				
+
+				//Checking options to see if we're supposed to choose a random player to drink or not.
+				String dialogText = "Make somebody else drink for " + currentCardValue + " seconds."; 
+				if (Splashscreen.option2 == 2){
+					int min = 1;
+					int max = numOfPlayers;
+					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
+				}
 
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
+				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was correct
 				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
-					generalDialog("Correct!","You were correct. Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
 				}else{ //suit is black, user was incorrect
 				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds.");
-					generalDialog("Incorrect", "You were incorrect. Drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", "Done Drinking", true);
 				}
 
 				//hide the buttons
@@ -148,7 +187,6 @@ public class Round1 extends Activity {
         .setMessage(message)
         .setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
 
-            @Override
             public void onClick(DialogInterface dialog, int which) {
 //          	Do stuff here        
             	if (callIsAnotherRound==true){
@@ -244,6 +282,9 @@ public class Round1 extends Activity {
 			case R.id.restart_game:
 				restartGameSelected();
 				return true;
+			case R.id.view_rules:
+				viewRulesSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
@@ -266,9 +307,7 @@ public class Round1 extends Activity {
 	        .setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
 	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
 
-	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
-
 	            	//Start splashscreen activity.
 	    			Intent splashscreenIntent = new Intent(Round1.this, Splashscreen.class);
 	    			Round1.this.startActivity(splashscreenIntent);
@@ -276,13 +315,18 @@ public class Round1 extends Activity {
 	                GenerateCard.clearPickedCardsList();
 	              //Stop Round 1 activity
 	                Round1.this.finish();
-	                
 	            }
 
 	        })
 	        .setNegativeButton("Cancel", null)
 	        .show();
-			
+		}
+		
+		private void viewRulesSelected(){
+			//Start the Rules activity.
+			/* Create an Intent that will start the Activity. */
+			Intent viewRulesIntent = new Intent(Round1.this, Rules.class);
+			Round1.this.startActivity(viewRulesIntent);
 		}
  
 	

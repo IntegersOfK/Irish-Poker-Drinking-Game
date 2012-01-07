@@ -12,11 +12,18 @@
         android:layout_height="match_parent"
         android:layout_weight="0.45" >
 
+        <Button
+            android:id="@+id/tempButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome to the Irish Poker Drinking Game!"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
@@ -33,7 +40,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/graphic3" />
     </LinearLayout>
-
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -48,46 +55,38 @@
             android:orientation="vertical" >
 
             <Button
+                android:id="@+id/button5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:text="Start"
+                android:textColor="#FFFFFF" />
+
+            <Button
                 android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rules" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:text="Rules"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Options" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.09"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Players"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/BLACK" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start" />
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+				android:background="@drawable/custom_button"
+                android:text="Options"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.14"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
             <Button
@@ -97,7 +96,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.30"
                 android:text="↑"
-                  android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF" 
+                android:background="@drawable/custom_button"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -105,9 +106,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/BLACK"
-                android:textStyle="bold" 
-                  android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button3"
@@ -115,11 +116,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.30"
+				android:background="@drawable/custom_button"
                 android:text="↓"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

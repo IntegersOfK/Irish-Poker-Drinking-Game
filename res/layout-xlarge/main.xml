@@ -12,22 +12,24 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" android:layout_weight=".3">
+        android:layout_weight="0.25"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
+            android:textColor="#000000" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="3" android:layout_weight=".2">
+        android:layout_weight="0.23"
+        android:weightSum="3" >
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -36,13 +38,12 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small" 
-                android:layout_gravity="center" android:visibility="gone"/>
-
+                android:layout_gravity="center"
+                android:background="@drawable/back" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,14 +53,12 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/imageButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small" 
                 android:layout_gravity="center"
-                 android:visibility="gone"/>
-
+                android:background="@drawable/back" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,23 +68,20 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_small"
                 android:layout_gravity="center"
-                 android:visibility="gone"/>
-
+                android:background="@drawable/back" />
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".2"
+        android:layout_weight="0.23"
         android:weightSum="3" >
 
         <LinearLayout
@@ -95,13 +91,12 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonLeftCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back"
                 android:layout_gravity="center"
-                 android:visibility="gone"/>
+                android:background="@drawable/back" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,12 +106,12 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonMainCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back" 
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:background="@drawable/back" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,13 +121,12 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonRightCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back"
                 android:layout_gravity="center"
-                 android:visibility="gone"/>
+                android:background="@drawable/back" />
         </LinearLayout>
     </LinearLayout>
 
@@ -140,25 +134,28 @@
         android:id="@+id/linearLayout12"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".3" android:weightSum="1">
+        android:layout_weight="0.29"
+        android:weightSum="1" >
 
         <Button
             android:id="@+id/blackButton"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight=".5"
-            android:background="#000000" android:text="BLACK" android:textColor="#FFFFFF"
-             android:visibility="invisible"/>
+            android:background="@drawable/custom_button_black"
+            android:text="BLACK"
+            android:textColor="#FFFFFF"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/redButton"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight=".5"
-            android:text="RED" android:textColor="#FFFFFF"
-            android:background="#CD0000"
-             android:visibility="invisible"/>
-
+            android:background="@drawable/custom_button"
+            android:text="RED"
+            android:textColor="#FFFFFF"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </LinearLayout>

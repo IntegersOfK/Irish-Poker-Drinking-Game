@@ -22,7 +22,7 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 	String LOG = "IrishPokerRound3";
 	private Button mInsideButton, mOutsideButton;
 	private TextView mTextView;
-	private ImageButton mMainCard, mLeftCard, mRightCard;
+	private Button mMainCard, mLeftCard, mRightCard;
 	private int numOfPlayers;
 	int currentLoop = 0;
 
@@ -45,13 +45,13 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 		//Set the textview.
         mTextView = (TextView) findViewById(R.id.textView1);
         //set the mainCard.
-        mMainCard = (ImageButton) findViewById(R.id.buttonMainCard);
+        mMainCard = (Button) findViewById(R.id.buttonMainCard);
         
         //set the previouscards:
-        mLeftCard = (ImageButton) findViewById(R.id.buttonLeftCard);
-        mRightCard = (ImageButton) findViewById(R.id.buttonRightCard);
+        mLeftCard = (Button) findViewById(R.id.buttonLeftCard);
+        mRightCard = (Button) findViewById(R.id.buttonRightCard);
         
-        mMainCard.setImageResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
+        mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[0]); //turn the card on it's back.
         
       //We have to find the right player again to get it's cards from previous rounds.
         currentPlayer = new Player();
@@ -89,8 +89,8 @@ public class Round3 extends Activity {  //is the next card going to be inside or
         }
         
         
-		mLeftCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
-		mRightCard.setImageResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardIndex]);
+		mLeftCard.setBackgroundResource(IrishPokerActivity.imageArr[currentPlayer.card1.cardIndex]);
+		mRightCard.setBackgroundResource(IrishPokerActivity.imageArr[currentPlayer.card2.cardIndex]);
 		mLeftCard.setVisibility(View.VISIBLE);
 		mRightCard.setVisibility(View.VISIBLE);
 
@@ -116,14 +116,35 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				Log.i(LOG, "User has selected INSIDE.");
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(3, current);
+				
+				//Checking options to see if face cards are worth 10 or not 
+				int currentCardValue = current.returnValue(); 
+				if (Splashscreen.option1 == 2){
+					if (currentCardValue > 10) {
+						currentCardValue = 10;
+					}
+				}
+
+				//Checking options to see if we're supposed to choose a random player to drink or not.
+				String dialogText = "Make somebody else drink for " + currentCardValue + " seconds."; 
+				if (Splashscreen.option2 == 2){
+					int min = 1;
+					int max = numOfPlayers;
+					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
+				}
+
+				
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
+				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is incorrect. " + current.returnValue() + " is less than " + cardExplain1 + " or greater than " + cardExplain2 + ".");
-					generalDialog("Incorrect" , "You were incorrect. You must drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Incorrect" , "You were incorrect. You must drink for " + currentCardValue + " seconds.", "Done Drinking", true);
 				}else{
 					Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " and less than " + cardExplain2 + ".");
-					generalDialog("Correct" , "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Correct" , "You were correct! " + dialogText, "Done Drinking", true);
 
 					
 				}
@@ -142,14 +163,34 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 				Log.i(LOG, "User has selected OUTSIDE.");
 				Card current = GenerateCard.generateCard();
 				currentPlayer.setCard(3, current);
+				
+				//Checking options to see if face cards are worth 10 or not 
+				int currentCardValue = current.returnValue(); 
+				if (Splashscreen.option1 == 2){
+					if (currentCardValue > 10) {
+						currentCardValue = 10;
+					}
+				}
+
+				//Checking options to see if we're supposed to choose a random player to drink or not.
+				String dialogText = "Make somebody else drink for " + currentCardValue + " seconds."; 
+				if (Splashscreen.option2 == 2){
+					int min = 1;
+					int max = numOfPlayers;
+					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
+				}
+				
 				//flip the card over
-				mMainCard.setImageResource(IrishPokerActivity.imageArr[current.cardIndex]);
+				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				if ((current.returnValue()<cardExplain1)|(current.returnValue()>cardExplain2)){
 					Log.i(LOG, "User is correct. " + current.returnValue() + " is more than " + cardExplain1 + " or less than " + cardExplain2 + ".");
-					generalDialog("Correct" , "You were correct! Make somebody else drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Correct" , "You were correct! Make somebody else drink for " + currentCardValue + " seconds.", "Done Drinking", true);
 				}else{
 					Log.i(LOG, "User is incorrect. " + current.returnValue() + " is greater than " + cardExplain1 + " and less than " + cardExplain2 + ".");
-					generalDialog("Incorrect" , "You were incorrect. You must drink for " + current.returnValue() + " seconds.", "Done Drinking", true);
+					generalDialog("Incorrect" , "You were incorrect. " + dialogText, "Done Drinking", true);
 				}
 
 				//hide the buttons
@@ -185,7 +226,6 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 		.setMessage(message)
 		.setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
 
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				//          	Do stuff here        
 				if (callIsAnotherRound==true){
@@ -290,11 +330,13 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 			case R.id.restart_game:
 				restartGameSelected();
 				return true;
+			case R.id.view_rules:
+				viewRulesSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
 		}
-
 		private void previousCardsSelected() {
 
 			/* Create an Intent that will start the Activity. */
@@ -312,7 +354,6 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 	        .setMessage("Are you sure that you want to quit this game? All players and cards will be reset.")
 	        .setPositiveButton("Restart Game", new DialogInterface.OnClickListener() {
 
-	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
 
 	            	//Start splashscreen activity.
@@ -328,7 +369,13 @@ public class Round3 extends Activity {  //is the next card going to be inside or
 	        })
 	        .setNegativeButton("Cancel", null)
 	        .show();
-			
+		}
+		
+		private void viewRulesSelected(){
+			//Start the Rules activity.
+			/* Create an Intent that will start the Activity. */
+			Intent viewRulesIntent = new Intent(Round3.this, Rules.class);
+			Round3.this.startActivity(viewRulesIntent);
 		}
 		
 

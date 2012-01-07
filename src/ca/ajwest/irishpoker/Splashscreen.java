@@ -16,9 +16,10 @@ import android.widget.TextView;
 public class Splashscreen extends Activity {
 
 	String LOG = "IrishPokerSplash";
-	Button mRulesButton, mUpButton, mDownButton, mOptionsButton, mStartButton;
+	Button mRulesButton, mUpButton, mDownButton, mOptionsButton, mStartButton, tempButton;
 	private TextView mPlayerNum;
 	public static int numPlayers = 1;
+	public static int option1, option2, option3; //The three options to be set.
 
 	/** Called when the activity is first created. */
 	@Override
@@ -30,14 +31,12 @@ public class Splashscreen extends Activity {
 		//Set the textview.
 		mPlayerNum = (TextView) findViewById(R.id.textView2);
 
-
-
-
 		mRulesButton = (Button) findViewById(R.id.button1);
 		mUpButton = (Button) findViewById(R.id.button2);
 		mDownButton = (Button) findViewById(R.id.button3);
 		mOptionsButton = (Button) findViewById(R.id.button4);
 		mStartButton = (Button) findViewById(R.id.button5);
+		tempButton = (Button) findViewById(R.id.tempButton);
 
 		updatePlayerNumText(numPlayers);
 		
@@ -79,8 +78,8 @@ public class Splashscreen extends Activity {
 				Log.i(LOG, "Options Selected");
 				
 				/* Create an Intent that will start the Activity. */
-				Intent previousCardsIntent = new Intent(Splashscreen.this, PreviousCards.class);
-				Splashscreen.this.startActivity(previousCardsIntent);
+				Intent optionsIntent = new Intent(Splashscreen.this, Options.class);
+				Splashscreen.this.startActivity(optionsIntent);
 				
 			}           
 		});
@@ -96,10 +95,23 @@ public class Splashscreen extends Activity {
 
 			}           
 		});
+		
+		tempButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				Log.i(LOG, "Temp Intent Selected");
+
+				/* Create an Intent that will start the Activity. */
+				Intent tempIntent = new Intent(Splashscreen.this, CountDown.class);
+				Splashscreen.this.startActivity(tempIntent);
+
+			}           
+		});
+		
+		
 	}
 	
 	private void updatePlayerNumText(int num){
-		mPlayerNum.setText(num + "");
+		mPlayerNum.setText("Players: " + num);
 	}
 	
 	
@@ -117,16 +129,26 @@ public class Splashscreen extends Activity {
 			case R.id.previous_cards:
 				previousCardsSelected();
 				return true;
+			case R.id.view_rules:
+				viewRulesSelected();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
 		}
-
 		private void previousCardsSelected() {
 
 			/* Create an Intent that will start the Activity. */
 			Intent previousCardsIntent = new Intent(Splashscreen.this, PreviousCards.class);
 			Splashscreen.this.startActivity(previousCardsIntent);
+		}
+		
+		private void viewRulesSelected(){
+			//Start the Rules activity.
+			// Create an Intent that will start the Activity.
+			
+			Intent viewRulesIntent = new Intent(Splashscreen.this, Rules.class);
+			Splashscreen.this.startActivity(viewRulesIntent);
 			
 		}
 	
