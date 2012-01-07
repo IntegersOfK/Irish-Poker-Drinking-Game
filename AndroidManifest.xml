@@ -24,8 +24,7 @@
         <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".IrishPokerActivity"
-            android:screenOrientation="landscape" >
+            android:name=".IrishPokerActivity">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -34,8 +33,7 @@
         <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Round1"
-            android:screenOrientation="landscape" >
+            android:name=".Round1">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -44,8 +42,7 @@
         <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Round2"
-            android:screenOrientation="landscape" >
+            android:name=".Round2">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -54,8 +51,7 @@
         <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Round3"
-            android:screenOrientation="landscape" >
+            android:name=".Round3">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -64,8 +60,7 @@
          <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Round4"
-            android:screenOrientation="landscape" >
+            android:name=".Round4">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -74,8 +69,7 @@
           <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Rules"
-            android:screenOrientation="landscape" >
+            android:name=".Rules">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -84,8 +78,7 @@
         <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".Nextroundprompt"
-            android:screenOrientation="landscape" >
+            android:name=".Nextroundprompt">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
@@ -94,21 +87,34 @@
          <activity
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:name=".PreviousCards"
-            android:screenOrientation="landscape" >
+            android:name=".PreviousCards">
             <intent-filter >
                 <action android:name="android.intent.action.DEFAULT" />
                 <category android:name="android.intent.category.VIEW" />
             </intent-filter>
         </activity>
-            
-            
+        <activity
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:name=".Options" >
+            <intent-filter >
+                <action android:name="android.intent.action.DEFAULT" />
+
+                <category android:name="android.intent.category.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:name=".CountDown" >
+            <intent-filter >
+                <action android:name="android.intent.action.DEFAULT" />
+                <category android:name="android.intent.category.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
 
-    <supports-screens
-        android:largeScreens="false"
-        android:normalScreens="false"
-        android:smallScreens="false"
-        android:xlargeScreens="true" />
+   <supports-screens
+      android:anyDensity="true"/> 
 
 </manifest>
