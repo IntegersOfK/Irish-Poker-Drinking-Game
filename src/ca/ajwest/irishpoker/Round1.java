@@ -27,7 +27,7 @@ public class Round1 extends Activity {
 	private TextView mTextView;
 	private int numOfPlayers;
 	int currentLoop = 0;
- 
+	private final int COUNTDOWNREQUESTCODE = 1;
 	
 	
 	/** Called when the activity is first created. */
@@ -94,6 +94,15 @@ public class Round1 extends Activity {
 					int min = 1;
 					int max = numOfPlayers;
 					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+					
+					//we don't want to choose the same player who is playing, and obviously if there's only 1 player, they're going to be selected.
+					//So basically, if there is more than 1 player, and the current player has been selected as the person to have to drink, a new player number will be generated.
+					if (numOfPlayers != 1){
+						while (ranValue == currentLoop){ 
+							ranValue = min + (int)(Math.random() * ((max - min) + 1)); //keep selecting a random other player until it's not the current player.
+						}
+					}
+					
 	                Log.i(LOG, "ranValue=" + ranValue);
 	                
 					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
@@ -102,12 +111,27 @@ public class Round1 extends Activity {
 				//flip the card over
 				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
+	
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was incorrect
-				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
-					generalDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", "Done Drinking", true);
+
+					//checking to see if user wants the countdown timer or not:
+					if (Splashscreen.option3 == 2){
+						//timer must display
+						countdownDialog("Incorrect!", "You were incorrect. " + dialogText, currentCardValue);
+					}else{
+						//timer won't display
+						generalDialog("Incorrect!","You were incorrect. " + dialogText, "Done Drinking", true);
+					}
+					
 				}else{ //suit is black, user was correct
-				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds. Click next to continue to ROUND 2!");
-					generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
+					//checking to see if user wants the countdown timer or not:
+					if (Splashscreen.option3 == 2){
+						//timer must display
+						countdownDialog("Correct!", "You were correct. " + dialogText, currentCardValue);
+					}else{
+						//timer won't display
+						generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
+					}
 				}
 
 				//hide the buttons
@@ -139,7 +163,15 @@ public class Round1 extends Activity {
 					int min = 1;
 					int max = numOfPlayers;
 					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
-	                Log.i(LOG, "ranValue=" + ranValue);
+
+					//we don't want to choose the same player who is playing, and obviously if there's only 1 player, they're going to be selected.
+					//So basically, if there is more than 1 player, and the current player has been selected as the person to have to drink, a new player number will be generated.
+					if (numOfPlayers != 1){
+						while (ranValue == currentLoop){ 
+							ranValue = min + (int)(Math.random() * ((max - min) + 1)); //keep selecting a random other player until it's not the current player.
+						}
+					}
+					Log.i(LOG, "ranValue=" + ranValue);
 	                
 					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
 				}
@@ -148,11 +180,26 @@ public class Round1 extends Activity {
 				mMainCard.setBackgroundResource(IrishPokerActivity.imageArr[current.cardIndex]);
 				//did user guess correctly?
 				if ((current.returnSuit()==1)||(current.returnSuit()==2)){ //suit is red, user was correct
-				//	mTextView.setText("You were correct. Make somebody else drink for " + current.returnValue() + " seconds.");
-					generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
+					//checking to see if user wants the countdown timer or not:
+					if (Splashscreen.option3 == 2){
+						//timer must display
+						countdownDialog("Correct!", "You were correct. " + dialogText, currentCardValue);
+					}else{
+						//timer won't display
+						generalDialog("Correct!","You were correct. " + dialogText, "Done Drinking", true);
+					}
+					
 				}else{ //suit is black, user was incorrect
-				//	mTextView.setText("You were incorrect. Drink for " + current.returnValue() + " seconds.");
-					generalDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", "Done Drinking", true);
+					//checking to see if user wants the countdown timer or not:
+					if (Splashscreen.option3 == 2){
+						//timer must display
+						countdownDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", currentCardValue);
+					}else{
+						//timer won't display
+						generalDialog("Incorrect", "You were incorrect. Drink for " + currentCardValue + " seconds.", "Done Drinking", true);	
+					}
+					
+					
 				}
 
 				//hide the buttons
@@ -198,6 +245,44 @@ public class Round1 extends Activity {
         //.setNegativeButton("Cancel", null) No ability to cancel.
         .show();
 	}
+	
+	
+	private void countdownDialog(String title, String message, final int currentCardValue) {
+		
+		new AlertDialog.Builder(this)
+        .setIcon(android.R.drawable.ic_menu_more)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("Start Drinking", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+//          	Do stuff here        
+    			/* Create an Intent that will start the Activity. */
+				Intent countdownIntent = new Intent(Round1.this, CountDown.class);
+				  //Create the bundle
+	            Bundle bundle = new Bundle();
+		
+				bundle.putInt("timerValueStoragePointer", currentCardValue);
+				countdownIntent.putExtras(bundle);
+				startActivityForResult(countdownIntent, COUNTDOWNREQUESTCODE); //start countdown and expect a response. Also sending code so that we know which request it has fufilled onResult.
+            
+	                      
+            
+            } 
+        })
+        //.setNegativeButton("Cancel", null) No ability to cancel.
+        .show();
+	}
+	
+	//And when we're returned from that countdown activity...
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
+        //Bundle extras = intent.getExtras(); Don't really need anything from the countdown activity.
+        //mEditText1.setText(extras != null ? extras.getString("returnKey"):"nothing returned"); 
+        
+        	isAnotherRound();
+    }
 	
 	
 

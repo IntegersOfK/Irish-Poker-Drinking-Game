@@ -25,19 +25,19 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Face Card Value for Drink Length"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
-        
         <LinearLayout
             android:id="@+id/LinearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Face Card Value for Drink Length"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
 
             <RadioGroup
                 android:id="@+id/RadioGroupFaceCardValue"
@@ -47,22 +47,24 @@
 
                 <RadioButton
                     android:id="@+id/radio1"
-                    android:textColor="#000000"
-                    android:button="@drawable/custom_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Face Value" />
+                    android:button="@drawable/custom_radio_button"
+                    android:text="Face Value"
+                    android:paddingLeft="60dip"
+                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/radio2"
-                    android:textColor="#000000"
-                    android:button="@drawable/custom_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Always = 10 seconds" />
+                    android:button="@drawable/custom_radio_button"
+                    android:text="Always = 10 seconds"
+                    android:paddingLeft="60dip"
+                    android:textColor="#000000" />
             </RadioGroup>
-        
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -70,16 +72,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
-
-
-
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Drink Assignment on Correct Answer"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
         
         
                 <LinearLayout
@@ -87,6 +79,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/TextView01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Drink Assignment on Correct Answer"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="#000000" />
 
             <RadioGroup
                 android:id="@+id/RadioGroupDrinkAllocation"
@@ -100,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/custom_radio_button"
                     android:text="Player chooses who will drink"
+                    android:paddingLeft="60dip"
                     android:textColor="#000000" />
 
                 <RadioButton
@@ -108,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/custom_radio_button"
                     android:text="Player who will drink is chosen randomly"
+                    android:paddingLeft="60dip"
                     android:textColor="#000000" />
             </RadioGroup>
         </LinearLayout>
@@ -120,23 +122,23 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <TextView
-            android:id="@+id/TextView02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Drink Timer"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
-
         <LinearLayout
             android:id="@+id/LinearLayout02"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drink Timer"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
+
             <RadioGroup
                 android:id="@+id/RadioGroupTimer"
-                android:layout_width="fill_parent"
+                android:layout_width="257dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
@@ -146,6 +148,7 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/custom_radio_button"
                     android:text="Disabled"
+                    android:paddingLeft="60dip"
                     android:textColor="#000000" />
 
                 <RadioButton
@@ -154,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/custom_radio_button"
                     android:text="Enabled"
+                    android:paddingLeft="60dip"
                     android:textColor="#000000" />
             </RadioGroup>
         </LinearLayout>

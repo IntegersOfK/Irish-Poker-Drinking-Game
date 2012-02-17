@@ -294,6 +294,15 @@ public class Round4 extends Activity {
 			int min = 1;
 			int max = numOfPlayers;
 			int ranValue = min + (int)(Math.random() * ((max - min) + 1));
+			
+            //we don't want to choose the same player who is playing, and obviously if there's only 1 player, they're going to be selected.
+			//So basically, if there is more than 1 player, and the current player has been selected as the person to have to drink, a new player number will be generated.
+			if (numOfPlayers != 1){
+				while (ranValue == currentLoop){ 
+					ranValue = min + (int)(Math.random() * ((max - min) + 1)); //keep selecting a random other player until it's not the current player.
+				}
+			}
+			
             Log.i(LOG, "ranValue=" + ranValue);
             
 			dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";

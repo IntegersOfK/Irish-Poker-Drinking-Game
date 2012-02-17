@@ -24,6 +24,7 @@ public class Round2 extends Activity{
 	private Button mMainCard, mLeftCard;
 	private int numOfPlayers;
 	int currentLoop = 0;
+	private final int COUNTDOWNREQUESTCODE = 2;
 
 
 	/** Called when the activity is first created. */
@@ -114,7 +115,17 @@ public class Round2 extends Activity{
 					int min = 1;
 					int max = numOfPlayers;
 					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
-	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+	                
+	              //we don't want to choose the same player who is playing, and obviously if there's only 1 player, they're going to be selected.
+					//So basically, if there is more than 1 player, and the current player has been selected as the person to have to drink, a new player number will be generated.
+					if (numOfPlayers != 1){
+						while (ranValue == currentLoop){ 
+							ranValue = min + (int)(Math.random() * ((max - min) + 1)); //keep selecting a random other player until it's not the current player.
+						}
+					}
+					
+					Log.i(LOG, "ranValue=" + ranValue);
 	                
 					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
 				}
@@ -161,6 +172,14 @@ public class Round2 extends Activity{
 					int max = numOfPlayers;
 					int ranValue = min + (int)(Math.random() * ((max - min) + 1));
 	                Log.i(LOG, "ranValue=" + ranValue);
+	                
+	              //we don't want to choose the same player who is playing, and obviously if there's only 1 player, they're going to be selected.
+					//So basically, if there is more than 1 player, and the current player has been selected as the person to have to drink, a new player number will be generated.
+					if (numOfPlayers != 1){
+						while (ranValue == currentLoop){ 
+							ranValue = min + (int)(Math.random() * ((max - min) + 1)); //keep selecting a random other player until it's not the current player.
+						}
+					}
 	                
 					dialogText = "Make player " + ranValue + " drink for " + currentCardValue + " seconds.";
 				}
@@ -217,6 +236,36 @@ public class Round2 extends Activity{
 		//.setNegativeButton("Cancel", null) No ability to cancel.
 		.show();
 	}
+	
+	
+private void countdownDialog(String title, String message, final int currentCardValue) {
+		
+		new AlertDialog.Builder(this)
+        .setIcon(android.R.drawable.ic_menu_more)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("Start Drinking", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+//          	Do stuff here        
+    			/* Create an Intent that will start the Activity. */
+				Intent countdownIntent = new Intent(Round2.this, CountDown.class);
+				  //Create the bundle
+	            Bundle bundle = new Bundle();
+		
+				bundle.putInt("timerValueStoragePointer", currentCardValue);
+				countdownIntent.putExtras(bundle);
+				startActivityForResult(countdownIntent, COUNTDOWNREQUESTCODE); //start countdown and expect a response. Also sending code so that we know which request it has fufilled onResult.
+            
+	                      
+            
+            } 
+        })
+        //.setNegativeButton("Cancel", null) No ability to cancel.
+        .show();
+	}
+	
+	
 
 	private void saveCurrentPlayer() {
 		Log.i(LOG, "Saving player.");
